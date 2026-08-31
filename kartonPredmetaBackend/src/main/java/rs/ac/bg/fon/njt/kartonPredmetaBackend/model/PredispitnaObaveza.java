@@ -27,4 +27,38 @@ public class PredispitnaObaveza implements Serializable, DomainEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "predmet_id", nullable = false)
     private Predmet predmet;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
+    }
+
+    public int getBrojPoena() {
+        return brojPoena;
+    }
+
+    public void setBrojPoena(int brojPoena) {
+        this.brojPoena = brojPoena;
+    }
+
+    public Predmet getPredmet() {
+        return predmet;
+    }
+
+    public void setPredmet(Predmet predmet) {
+        this.predmet = predmet;
+    }
+    
+    
 }

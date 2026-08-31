@@ -38,4 +38,54 @@ public class IstorijaIzmene implements Serializable, DomainEntity {
     protected void onCreate() {
         this.datumVreme = LocalDateTime.now();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getPredmetId() {
+        return predmetId;
+    }
+
+    public void setPredmetId(int predmetId) {
+        this.predmetId = predmetId;
+    }
+
+    public String getKorisnickoIme() {
+        return korisnickoIme;
+    }
+
+    public void setKorisnickoIme(String korisnickoIme) {
+        this.korisnickoIme = korisnickoIme;
+    }
+
+    public String getTipAkcije() {
+        return tipAkcije;
+    }
+
+    public void setTipAkcije(String tipAkcije) {
+        this.tipAkcije = tipAkcije;
+    }
+
+    public String getOpis() {
+        return opis;
+    }
+
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    public LocalDateTime getDatumVreme() {
+        return datumVreme;
+    }
+
+    public void setDatumVreme(LocalDateTime datumVreme) {
+        this.datumVreme = datumVreme;
+    }
+    
+    
 }

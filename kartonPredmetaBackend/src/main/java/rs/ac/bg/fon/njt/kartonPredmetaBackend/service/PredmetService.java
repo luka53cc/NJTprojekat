@@ -49,6 +49,8 @@ public class PredmetService {
                 .orElseThrow(() -> new NotFoundException("Predmet sa id " + id + " ne postoji"));
         return mapper.toDTO(entity);
     }
+    
+    
 
     public PredmetDTO add(PredmetDTO dto) {
         proveriPoslovnaPravila(dto);
@@ -105,6 +107,40 @@ public class PredmetService {
         repository.deleteById(id);
         istorijaIzmeneService.zabelezi(id, trenutniKorisnik(), "BRISANJE", "Obrisan predmet: " + naziv);
     }
+    
+    public org.springframework.data.domain.Page<PredmetDTO> pretrazi(
+        String naziv, String sifra, Integer godinaStudija, Integer semestar,
+        rs.ac.bg.fon.njt.kartonPredmetaBackend.model.enums.StatusPredmeta status,
+        Integer studijskiProgramId, Integer modulId,
+        org.springframework.data.domain.Pageable pageable) {
+
+    org.springframework.data.jpa.domain.Specification<Predmet> spec = (root, query, cb) -> cb.conjunction();
+
+    if (naziv != null && !naziv.isBlank()) {
+        spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("naziv")), "%" + naziv.toLowerCase() + "%"));
+    }
+    if (sifra != null && !sifra.isBlank()) {
+        spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("sifra")), "%" + sifra.toLowerCase() + "%"));
+    }
+    if (godinaStudija != null) {
+        spec = spec.and((root, query, cb) -> cb.equal(root.get("godinaStudija"), godinaStudija));
+    }
+    if (semestar != null) {
+        spec = spec.and((root, query, cb) -> cb.equal(root.get("semestar"), semestar));
+    }
+    if (status != null) {
+        spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+    }
+    if (studijskiProgramId != null) {
+        spec = spec.and((root, query, cb) -> cb.equal(root.get("studijskiProgram").get("id"), studijskiProgramId));
+    }
+    if (modulId != null) {
+        spec = spec.and((root, query, cb) -> cb.equal(root.get("modul").get("id"), modulId));
+    }
+
+    return repository.findAll(spec, pageable).map(mapper::toDTO);
+}
+    
 
     // ---------- Poslovna pravila ----------
 

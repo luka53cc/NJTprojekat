@@ -29,4 +29,38 @@ public class LiteraturaDTO implements DomainDTO{
 
     @NotNull(message = "Tip literature je obavezan")
     private TipLiterature tip;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public TipLiterature getTip() {
+        return tip;
+    }
+
+    public void setTip(TipLiterature tip) {
+        this.tip = tip;
+    }
+    
+    
 }

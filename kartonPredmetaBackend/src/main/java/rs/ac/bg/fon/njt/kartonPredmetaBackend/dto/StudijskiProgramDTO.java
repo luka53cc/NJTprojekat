@@ -15,4 +15,30 @@ public class StudijskiProgramDTO implements DomainDTO{
 
     @NotBlank(message = "Skraćenica studijskog programa je obavezna")
     private String skracenica;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
+    }
+
+    public String getSkracenica() {
+        return skracenica;
+    }
+
+    public void setSkracenica(String skracenica) {
+        this.skracenica = skracenica;
+    }
+    
+    
 }

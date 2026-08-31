@@ -24,4 +24,30 @@ public class PredispitnaObavezaDTO implements DomainDTO{
 
     @Min(value = 0, message = "Broj poena ne može biti negativan")
     private int brojPoena;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
+    }
+
+    public int getBrojPoena() {
+        return brojPoena;
+    }
+
+    public void setBrojPoena(int brojPoena) {
+        this.brojPoena = brojPoena;
+    }
+    
+    
 }

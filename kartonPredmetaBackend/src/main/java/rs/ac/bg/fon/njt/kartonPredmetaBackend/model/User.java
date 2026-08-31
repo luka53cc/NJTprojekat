@@ -23,8 +23,43 @@ public class User implements Serializable, DomainEntity {
     private String korisnickoIme;
 
     @Column(nullable = false)
-    private String lozinka; // čuvaćemo hash, ne plain-text
+    private String lozinka; 
 
     @Column(nullable = false)
-    private String uloga; // npr. "ROLE_ADMIN"
+    private String uloga; 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getKorisnickoIme() {
+        return korisnickoIme;
+    }
+
+    public void setKorisnickoIme(String korisnickoIme) {
+        this.korisnickoIme = korisnickoIme;
+    }
+
+    public String getLozinka() {
+        return lozinka;
+    }
+
+    public void setLozinka(String lozinka) {
+        this.lozinka = lozinka;
+    }
+
+    public String getUloga() {
+        return uloga;
+    }
+
+    public void setUloga(String uloga) {
+        this.uloga = uloga;
+    }
+    
+    
+    
 }

@@ -16,6 +16,7 @@ public class ModulMapper implements BaseMapper<ModulDTO, Modul> {
         return entity;
     }
 
+   
     @Override
     public ModulDTO toDTO(Modul entity) {
         ModulDTO dto = new ModulDTO();

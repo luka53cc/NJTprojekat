@@ -89,4 +89,175 @@ public class Predmet implements Serializable, DomainEntity {
 
     @OneToMany(mappedBy = "predmet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<PredispitnaObaveza> predispitneObaveze = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
+    }
+
+    public String getSifra() {
+        return sifra;
+    }
+
+    public void setSifra(String sifra) {
+        this.sifra = sifra;
+    }
+
+    public int getGodinaStudija() {
+        return godinaStudija;
+    }
+
+    public void setGodinaStudija(int godinaStudija) {
+        this.godinaStudija = godinaStudija;
+    }
+
+    public int getSemestar() {
+        return semestar;
+    }
+
+    public void setSemestar(int semestar) {
+        this.semestar = semestar;
+    }
+
+    public int getEspb() {
+        return espb;
+    }
+
+    public void setEspb(int espb) {
+        this.espb = espb;
+    }
+
+    public int getFondPredavanja() {
+        return fondPredavanja;
+    }
+
+    public void setFondPredavanja(int fondPredavanja) {
+        this.fondPredavanja = fondPredavanja;
+    }
+
+    public int getFondVezbi() {
+        return fondVezbi;
+    }
+
+    public void setFondVezbi(int fondVezbi) {
+        this.fondVezbi = fondVezbi;
+    }
+
+    public StatusPredmeta getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPredmeta status) {
+        this.status = status;
+    }
+
+    public String getCilj() {
+        return cilj;
+    }
+
+    public void setCilj(String cilj) {
+        this.cilj = cilj;
+    }
+
+    public String getIshodiUcenja() {
+        return ishodiUcenja;
+    }
+
+    public void setIshodiUcenja(String ishodiUcenja) {
+        this.ishodiUcenja = ishodiUcenja;
+    }
+
+    public String getSadrzajPredavanja() {
+        return sadrzajPredavanja;
+    }
+
+    public void setSadrzajPredavanja(String sadrzajPredavanja) {
+        this.sadrzajPredavanja = sadrzajPredavanja;
+    }
+
+    public String getSadrzajVezbi() {
+        return sadrzajVezbi;
+    }
+
+    public void setSadrzajVezbi(String sadrzajVezbi) {
+        this.sadrzajVezbi = sadrzajVezbi;
+    }
+
+    public String getNacinPolaganja() {
+        return nacinPolaganja;
+    }
+
+    public void setNacinPolaganja(String nacinPolaganja) {
+        this.nacinPolaganja = nacinPolaganja;
+    }
+
+    public int getPoeniIspit() {
+        return poeniIspit;
+    }
+
+    public void setPoeniIspit(int poeniIspit) {
+        this.poeniIspit = poeniIspit;
+    }
+
+    public StudijskiProgram getStudijskiProgram() {
+        return studijskiProgram;
+    }
+
+    public void setStudijskiProgram(StudijskiProgram studijskiProgram) {
+        this.studijskiProgram = studijskiProgram;
+    }
+
+    public Modul getModul() {
+        return modul;
+    }
+
+    public void setModul(Modul modul) {
+        this.modul = modul;
+    }
+
+    public Nastavnik getNosilac() {
+        return nosilac;
+    }
+
+    public void setNosilac(Nastavnik nosilac) {
+        this.nosilac = nosilac;
+    }
+
+    public Set<Nastavnik> getNastavnici() {
+        return nastavnici;
+    }
+
+    public void setNastavnici(Set<Nastavnik> nastavnici) {
+        this.nastavnici = nastavnici;
+    }
+
+    public List<Literatura> getLiteratura() {
+        return literatura;
+    }
+
+    public void setLiteratura(List<Literatura> literatura) {
+        this.literatura = literatura;
+    }
+
+    public List<PredispitnaObaveza> getPredispitneObaveze() {
+        return predispitneObaveze;
+    }
+
+    public void setPredispitneObaveze(List<PredispitnaObaveza> predispitneObaveze) {
+        this.predispitneObaveze = predispitneObaveze;
+    }
+    
+    
+    
 }
