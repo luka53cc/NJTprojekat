@@ -1,0 +1,90 @@
+<div class="text-center" *ngIf="ucitavanje">
+  <div class="spinner-border"></div>
+</div>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<div *ngIf="predmet && !ucitavanje">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>{{ predmet.naziv }}</h3>
+    <div>
+      <button class="btn btn-success me-2" (click)="preuzmiPdf()">Preuzmi PDF</button>
+      <a [routerLink]="['/predmeti', predmet.id]" class="btn btn-outline-secondary me-2">Izmeni</a>
+      <a routerLink="/predmeti" class="btn btn-outline-secondary">Nazad na listu</a>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Osnovni podaci</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4"><strong>Šifra:</strong> {{ predmet.sifra }}</div>
+        <div class="col-md-4"><strong>Status:</strong> {{ predmet.status }}</div>
+        <div class="col-md-4"><strong>ESPB:</strong> {{ predmet.espb }}</div>
+
+        <div class="col-md-4 mt-2"><strong>Godina studija:</strong> {{ predmet.godinaStudija }}</div>
+        <div class="col-md-4 mt-2"><strong>Semestar:</strong> {{ predmet.semestar }}</div>
+        <div class="col-md-4 mt-2"><strong>Fond časova:</strong> {{ predmet.fondPredavanja }}+{{ predmet.fondVezbi }}</div>
+
+        <div class="col-md-6 mt-2"><strong>Studijski program:</strong> {{ predmet.studijskiProgramNaziv }}</div>
+        <div class="col-md-6 mt-2" *ngIf="predmet.modulNaziv"><strong>Modul:</strong> {{ predmet.modulNaziv }}</div>
+
+        <div class="col-md-6 mt-2"><strong>Nosilac predmeta:</strong> {{ predmet.nosilacImePrezime }}</div>
+        <div class="col-md-6 mt-2" *ngIf="predmet.nastavniciImenaPrezimena?.length">
+          <strong>Nastavnici:</strong> {{ predmet.nastavniciImenaPrezimena?.join(', ') }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3" *ngIf="predmet.cilj">
+    <div class="card-header">Cilj predmeta</div>
+    <div class="card-body">{{ predmet.cilj }}</div>
+  </div>
+
+  <div class="card mb-3" *ngIf="predmet.ishodiUcenja">
+    <div class="card-header">Ishodi učenja</div>
+    <div class="card-body">{{ predmet.ishodiUcenja }}</div>
+  </div>
+
+  <div class="card mb-3" *ngIf="predmet.sadrzajPredavanja">
+    <div class="card-header">Sadržaj predavanja</div>
+    <div class="card-body">{{ predmet.sadrzajPredavanja }}</div>
+  </div>
+
+  <div class="card mb-3" *ngIf="predmet.sadrzajVezbi">
+    <div class="card-header">Sadržaj vežbi</div>
+    <div class="card-body">{{ predmet.sadrzajVezbi }}</div>
+  </div>
+
+  <div class="card mb-3" *ngIf="predmet.nacinPolaganja">
+    <div class="card-header">Način polaganja ispita</div>
+    <div class="card-body">{{ predmet.nacinPolaganja }}</div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Predispitne obaveze i raspodela poena</div>
+    <div class="card-body">
+      <ul class="mb-0">
+        <li *ngFor="let o of predmet.predispitneObaveze">{{ o.naziv }}: {{ o.brojPoena }} poena</li>
+        <li>Ispit: {{ predmet.poeniIspit }} poena</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mb-3" *ngIf="predmet.literatura.length > 0">
+    <div class="card-header">Literatura</div>
+    <div class="card-body">
+      <ul class="mb-0">
+        <li *ngFor="let l of predmet.literatura">
+          <span class="badge" [class.bg-primary]="l.tip === 'OBAVEZNA'" [class.bg-secondary]="l.tip === 'PREPORUCENA'">
+            {{ l.tip }}
+          </span>
+          {{ l.autor }}: {{ l.naziv }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

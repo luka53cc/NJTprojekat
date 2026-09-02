@@ -1,0 +1,21 @@
+<h3>{{ izmena ? 'Izmena' : 'Novi' }} studijski program</h3>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<form (ngSubmit)="sacuvaj()" style="max-width: 500px;">
+  <div class="mb-3">
+    <label class="form-label">Naziv</label>
+    <input type="text" class="form-control" name="naziv" [(ngModel)]="model.naziv" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Skraćenica</label>
+    <input type="text" class="form-control" name="skracenica" [(ngModel)]="model.skracenica" required />
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="cuvanje">
+    <span *ngIf="cuvanje" class="spinner-border spinner-border-sm me-2"></span>
+    Sačuvaj
+  </button>
+  <button type="button" class="btn btn-secondary ms-2" (click)="otkazi()">Otkaži</button>
+</form>

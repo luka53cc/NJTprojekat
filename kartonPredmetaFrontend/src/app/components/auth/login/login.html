@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow-sm" style="width: 380px;">
+    <div class="card-body p-4">
+      <h4 class="card-title text-center mb-4">Prijava</h4>
+
+      <div class="alert alert-danger" *ngIf="greska">
+        {{ greska }}
+      </div>
+
+      <form (ngSubmit)="prijaviSe()">
+        <div class="mb-3">
+          <label class="form-label">Korisničko ime</label>
+          <input
+            type="text"
+            class="form-control"
+            name="korisnickoIme"
+            [(ngModel)]="korisnickoIme"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Lozinka</label>
+          <input
+            type="password"
+            class="form-control"
+            name="lozinka"
+            [(ngModel)]="lozinka"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="ucitavanje">
+          <span *ngIf="ucitavanje" class="spinner-border spinner-border-sm me-2"></span>
+          Prijavi se
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

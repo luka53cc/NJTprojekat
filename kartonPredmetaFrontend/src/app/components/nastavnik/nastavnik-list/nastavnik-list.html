@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Nastavnici</h3>
+  <a routerLink="/nastavnici/novi" class="btn btn-primary">+ Novi nastavnik</a>
+</div>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<div class="text-center" *ngIf="ucitavanje">
+  <div class="spinner-border"></div>
+</div>
+
+<table class="table table-striped table-hover" *ngIf="!ucitavanje">
+  <thead>
+    <tr>
+      <th>Ime i prezime</th>
+      <th>Email</th>
+      <th>Zvanje</th>
+      <th style="width: 160px;">Akcije</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let n of nastavnici">
+      <td>{{ n.ime }} {{ n.prezime }}</td>
+      <td>{{ n.email }}</td>
+      <td>{{ n.zvanje }}</td>
+      <td>
+        <a [routerLink]="['/nastavnici', n.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(n.id)">Obriši</button>
+      </td>
+    </tr>
+    <tr *ngIf="nastavnici.length === 0">
+      <td colspan="4" class="text-center text-muted">Nema unetih nastavnika</td>
+    </tr>
+  </tbody>
+</table>

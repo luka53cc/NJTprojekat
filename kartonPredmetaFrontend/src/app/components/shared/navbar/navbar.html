@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" *ngIf="authService.isLoggedIn()">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/predmeti">Karton predmeta</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/predmeti" routerLinkActive="active">Predmeti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/nastavnici" routerLinkActive="active">Nastavnici</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/moduli" routerLinkActive="active">Moduli</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/studijski-programi" routerLinkActive="active">Studijski programi</a>
+        </li>
+      </ul>
+
+      <span class="navbar-text me-3 text-light">
+        {{ authService.getKorisnickoIme() }}
+      </span>
+
+      <button class="btn btn-outline-light btn-sm" (click)="odjaviSe()">Odjava</button>
+    </div>
+  </div>
+</nav>

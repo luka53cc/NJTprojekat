@@ -1,0 +1,33 @@
+<h3>{{ izmena ? 'Izmena' : 'Novi' }} nastavnik</h3>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<form (ngSubmit)="sacuvaj()" style="max-width: 500px;">
+  <div class="mb-3">
+    <label class="form-label">Ime</label>
+    <input type="text" class="form-control" name="ime" [(ngModel)]="model.ime" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Prezime</label>
+    <input type="text" class="form-control" name="prezime" [(ngModel)]="model.prezime" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Zvanje</label>
+    <select class="form-select" name="zvanje" [(ngModel)]="model.zvanje" required>
+      <option *ngFor="let z of zvanja" [value]="z">{{ z }}</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="cuvanje">
+    <span *ngIf="cuvanje" class="spinner-border spinner-border-sm me-2"></span>
+    Sačuvaj
+  </button>
+  <button type="button" class="btn btn-secondary ms-2" (click)="otkazi()">Otkaži</button>
+</form>

@@ -1,0 +1,177 @@
+<h3>{{ izmena ? 'Izmena' : 'Novi' }} predmet</h3>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<form (ngSubmit)="sacuvaj()">
+
+  <div class="card mb-3">
+    <div class="card-header">Osnovni podaci</div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Naziv</label>
+          <input type="text" class="form-control" name="naziv" [(ngModel)]="model.naziv" required />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Šifra</label>
+          <input type="text" class="form-control" name="sifra" [(ngModel)]="model.sifra" required />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Status</label>
+          <select class="form-select" name="status" [(ngModel)]="model.status" required>
+            <option *ngFor="let s of statusi" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Godina studija</label>
+          <input type="number" class="form-control" name="godinaStudija" [(ngModel)]="model.godinaStudija" min="1" max="4" required />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Semestar</label>
+          <input type="number" class="form-control" name="semestar" [(ngModel)]="model.semestar" min="1" max="8" required />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">ESPB</label>
+          <input type="number" class="form-control" name="espb" [(ngModel)]="model.espb" min="1" required />
+        </div>
+        <div class="col-md-1">
+          <label class="form-label">Pred.</label>
+          <input type="number" class="form-control" name="fondPredavanja" [(ngModel)]="model.fondPredavanja" min="0" required />
+        </div>
+        <div class="col-md-1">
+          <label class="form-label">Vež.</label>
+          <input type="number" class="form-control" name="fondVezbi" [(ngModel)]="model.fondVezbi" min="0" required />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Studijski program</label>
+          <select class="form-select" name="studijskiProgramId" [(ngModel)]="model.studijskiProgramId" (ngModelChange)="onPromenaStudijskogProgramaId()" required>
+            <option [value]="0" disabled>-- Izaberite --</option>
+            <option *ngFor="let sp of studijskiProgrami" [value]="sp.id">{{ sp.naziv }}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Modul (opciono)</label>
+          <select class="form-select" name="modulId" [(ngModel)]="model.modulId">
+            <option [value]="undefined">-- Bez modula --</option>
+            <option *ngFor="let m of moduliZaProgram" [value]="m.id">{{ m.naziv }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Nosilac predmeta</label>
+          <select class="form-select" name="nosilacId" [(ngModel)]="model.nosilacId" required>
+            <option [value]="0" disabled>-- Izaberite --</option>
+            <option *ngFor="let n of nastavnici" [value]="n.id">{{ n.ime }} {{ n.prezime }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Nastavnici na predmetu</div>
+    <div class="card-body">
+      <div class="form-check" *ngFor="let n of nastavnici">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          [id]="'nastavnik-' + n.id"
+          [checked]="jeNastavnikOznacen(n.id)"
+          (change)="toggleNastavnik(n.id, $any($event.target).checked)"
+        />
+        <label class="form-check-label" [for]="'nastavnik-' + n.id">{{ n.ime }} {{ n.prezime }}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Cilj, ishodi i sadržaj</div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Cilj predmeta</label>
+        <textarea class="form-control" rows="2" name="cilj" [(ngModel)]="model.cilj"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Ishodi učenja</label>
+        <textarea class="form-control" rows="2" name="ishodiUcenja" [(ngModel)]="model.ishodiUcenja"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Sadržaj predavanja</label>
+        <textarea class="form-control" rows="3" name="sadrzajPredavanja" [(ngModel)]="model.sadrzajPredavanja"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Sadržaj vežbi</label>
+        <textarea class="form-control" rows="3" name="sadrzajVezbi" [(ngModel)]="model.sadrzajVezbi"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Način polaganja ispita</label>
+        <textarea class="form-control" rows="2" name="nacinPolaganja" [(ngModel)]="model.nacinPolaganja"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Predispitne obaveze i raspodela poena</span>
+      <button type="button" class="btn btn-sm btn-outline-primary" (click)="dodajPredispitnuObavezu()">+ Dodaj</button>
+    </div>
+    <div class="card-body">
+      <div class="row g-2 mb-2 align-items-center" *ngFor="let o of model.predispitneObaveze; let i = index">
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Naziv (npr. Kolokvijum 1)" [(ngModel)]="o.naziv" [name]="'obaveza-naziv-' + i" required />
+        </div>
+        <div class="col-md-4">
+          <input type="number" class="form-control" placeholder="Broj poena" [(ngModel)]="o.brojPoena" [name]="'obaveza-poeni-' + i" min="0" required />
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="ukloniPredispitnuObavezu(i)">Ukloni</button>
+        </div>
+      </div>
+
+      <div class="row g-2 align-items-center mt-2">
+        <div class="col-md-6"><strong>Poeni na ispitu:</strong></div>
+        <div class="col-md-4">
+          <input type="number" class="form-control" name="poeniIspit" [(ngModel)]="model.poeniIspit" min="0" max="100" required />
+        </div>
+      </div>
+
+      <p class="mt-2" [class.text-danger]="zbirPoena() !== 100" [class.text-success]="zbirPoena() === 100">
+        Ukupno poena: {{ zbirPoena() }} / 100
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Literatura</span>
+      <button type="button" class="btn btn-sm btn-outline-primary" (click)="dodajLiteraturu()">+ Dodaj</button>
+    </div>
+    <div class="card-body">
+      <div class="row g-2 mb-2 align-items-center" *ngFor="let l of model.literatura; let i = index">
+        <div class="col-md-4">
+          <input type="text" class="form-control" placeholder="Naziv" [(ngModel)]="l.naziv" [name]="'lit-naziv-' + i" required />
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Autor" [(ngModel)]="l.autor" [name]="'lit-autor-' + i" required />
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="l.tip" [name]="'lit-tip-' + i" required>
+            <option *ngFor="let t of tipoviLiterature" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="ukloniLiteraturu(i)">Ukloni</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="cuvanje">
+    <span *ngIf="cuvanje" class="spinner-border spinner-border-sm me-2"></span>
+    Sačuvaj
+  </button>
+  <button type="button" class="btn btn-secondary ms-2" (click)="otkazi()">Otkaži</button>
+
+</form>

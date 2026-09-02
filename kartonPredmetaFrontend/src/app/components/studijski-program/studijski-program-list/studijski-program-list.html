@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Studijski programi</h3>
+  <a routerLink="/studijski-programi/novi" class="btn btn-primary">+ Novi studijski program</a>
+</div>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<div class="text-center" *ngIf="ucitavanje">
+  <div class="spinner-border"></div>
+</div>
+
+<table class="table table-striped table-hover" *ngIf="!ucitavanje">
+  <thead>
+    <tr>
+      <th>Naziv</th>
+      <th>Skraćenica</th>
+      <th style="width: 160px;">Akcije</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let program of programi">
+      <td>{{ program.naziv }}</td>
+      <td>{{ program.skracenica }}</td>
+      <td>
+        <a [routerLink]="['/studijski-programi', program.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(program.id)">Obriši</button>
+      </td>
+    </tr>
+    <tr *ngIf="programi.length === 0">
+      <td colspan="3" class="text-center text-muted">Nema unetih studijskih programa</td>
+    </tr>
+  </tbody>
+</table>

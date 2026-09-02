@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Moduli</h3>
+  <a routerLink="/moduli/novi" class="btn btn-primary">+ Novi modul</a>
+</div>
+
+<div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
+
+<div class="text-center" *ngIf="ucitavanje">
+  <div class="spinner-border"></div>
+</div>
+
+<table class="table table-striped table-hover" *ngIf="!ucitavanje">
+  <thead>
+    <tr>
+      <th>Naziv</th>
+      <th>Studijski program</th>
+      <th style="width: 160px;">Akcije</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let m of moduli">
+      <td>{{ m.naziv }}</td>
+      <td>{{ m.studijskiProgramNaziv }}</td>
+      <td>
+        <a [routerLink]="['/moduli', m.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(m.id)">Obriši</button>
+      </td>
+    </tr>
+    <tr *ngIf="moduli.length === 0">
+      <td colspan="3" class="text-center text-muted">Nema unetih modula</td>
+    </tr>
+  </tbody>
+</table>
