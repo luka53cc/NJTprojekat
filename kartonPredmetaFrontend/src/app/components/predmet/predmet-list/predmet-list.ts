@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -40,12 +40,16 @@ export class PredmetListComponent implements OnInit {
 
   constructor(
     private service: PredmetService,
-    private studijskiProgramService: StudijskiProgramService
+    private studijskiProgramService: StudijskiProgramService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.studijskiProgramService.findAll().subscribe({
-      next: (podaci) => this.studijskiProgrami = podaci,
+      next: (podaci) => {
+        this.studijskiProgrami = podaci;
+        this.cdr.detectChanges();
+      },
       error: (err) => console.error(err)
     });
     this.pretrazi();
@@ -71,10 +75,12 @@ export class PredmetListComponent implements OnInit {
         this.ukupnoStranica = odgovor.totalPages;
         this.ukupnoElemenata = odgovor.totalElements;
         this.ucitavanje = false;
+        this.cdr.detectChanges(); // Odmah osvežava prikaz i gasi loader
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja predmeta';
         this.ucitavanje = false;
+        this.cdr.detectChanges(); // Osvežava ekran i u slučaju greške
         console.error(err);
       }
     });
@@ -112,6 +118,7 @@ export class PredmetListComponent implements OnInit {
       next: () => this.pretrazi(),
       error: (err) => {
         this.greska = 'Greška prilikom brisanja predmeta';
+        this.cdr.detectChanges();
         console.error(err);
       }
     });
@@ -129,6 +136,7 @@ export class PredmetListComponent implements OnInit {
       },
       error: (err) => {
         this.greska = 'Greška prilikom preuzimanja PDF-a';
+        this.cdr.detectChanges();
         console.error(err);
       }
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { StudijskiProgram } from '../../../models/studijski-program.model';
@@ -17,7 +17,10 @@ export class StudijskiProgramListComponent implements OnInit {
   ucitavanje: boolean = true;
   greska: string = '';
 
-  constructor(private service: StudijskiProgramService) {}
+  constructor(
+    private service: StudijskiProgramService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.ucitaj();
@@ -29,10 +32,12 @@ export class StudijskiProgramListComponent implements OnInit {
       next: (podaci) => {
         this.programi = podaci;
         this.ucitavanje = false;
+        this.cdr.detectChanges(); // Eksplicitno osvežava prikaz i gasi loader
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja studijskih programa';
         this.ucitavanje = false;
+        this.cdr.detectChanges(); // Osvežava ekran i u slučaju greške
         console.error(err);
       }
     });
@@ -46,6 +51,7 @@ export class StudijskiProgramListComponent implements OnInit {
       next: () => this.ucitaj(),
       error: (err) => {
         this.greska = 'Greška prilikom brisanja (možda postoje predmeti/moduli povezani sa ovim programom)';
+        this.cdr.detectChanges();
         console.error(err);
       }
     });

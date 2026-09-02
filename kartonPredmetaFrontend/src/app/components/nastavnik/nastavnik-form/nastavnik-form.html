@@ -2,7 +2,7 @@
 
 <div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
 
-<form (ngSubmit)="sacuvaj()" style="max-width: 500px;">
+<form #forma="ngForm" (ngSubmit)="sacuvaj()" style="max-width: 500px;">
   <div class="mb-3">
     <label class="form-label">Ime</label>
     <input type="text" class="form-control" name="ime" [(ngModel)]="model.ime" required />
@@ -15,7 +15,20 @@
 
   <div class="mb-3">
     <label class="form-label">Email</label>
-    <input type="email" class="form-control" name="email" [(ngModel)]="model.email" required />
+    <input 
+      type="email" 
+      class="form-control" 
+      name="email" 
+      [(ngModel)]="model.email" 
+      required 
+      email 
+      #emailInput="ngModel" 
+    />
+    <!-- Poruka o grešci za email -->
+    <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger mt-1">
+      <small *ngIf="emailInput.errors?.['required']">Email adresa je obavezna.</small>
+      <small *ngIf="emailInput.errors?.['email']">Unesite ispravnu email adresu (npr. primer@domain.com).</small>
+    </div>
   </div>
 
   <div class="mb-3">
@@ -25,7 +38,7 @@
     </select>
   </div>
 
-  <button type="submit" class="btn btn-primary" [disabled]="cuvanje">
+  <button type="submit" class="btn btn-primary" [disabled]="cuvanje || forma.invalid">
     <span *ngIf="cuvanje" class="spinner-border spinner-border-sm me-2"></span>
     Sačuvaj
   </button>

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/moduli")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ModulController {
 
     private final ModulService service;

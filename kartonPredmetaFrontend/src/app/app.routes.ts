@@ -15,20 +15,24 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'predmeti', pathMatch: 'full' },
 
-  { path: 'predmeti', component: PredmetListComponent, canActivate: [authGuard] },
+  // --- PREDMETI (Specifični prvi, pa osnovni) ---
   { path: 'predmeti/novi', component: PredmetFormComponent, canActivate: [authGuard] },
   { path: 'predmeti/detalji/:id', component: PredmetDetaljiComponent, canActivate: [authGuard] },
   { path: 'predmeti/:id', component: PredmetFormComponent, canActivate: [authGuard] },
+  { path: 'predmeti', component: PredmetListComponent, canActivate: [authGuard] },
 
-  { path: 'nastavnici', component: NastavnikListComponent, canActivate: [authGuard] },
+  // --- NASTAVNICI ---
   { path: 'nastavnici/novi', component: NastavnikFormComponent, canActivate: [authGuard] },
   { path: 'nastavnici/:id', component: NastavnikFormComponent, canActivate: [authGuard] },
+  { path: 'nastavnici', component: NastavnikListComponent, canActivate: [authGuard] },
 
-  { path: 'moduli', component: ModulListComponent, canActivate: [authGuard] },
+  // --- MODULI ---
   { path: 'moduli/novi', component: ModulFormComponent, canActivate: [authGuard] },
   { path: 'moduli/:id', component: ModulFormComponent, canActivate: [authGuard] },
+  { path: 'moduli', component: ModulListComponent, canActivate: [authGuard] },
 
-  { path: 'studijski-programi', component: StudijskiProgramListComponent, canActivate: [authGuard] },
+  // --- STUDIJSKI PROGRAMI ---
   { path: 'studijski-programi/novi', component: StudijskiProgramFormComponent, canActivate: [authGuard] },
   { path: 'studijski-programi/:id', component: StudijskiProgramFormComponent, canActivate: [authGuard] },
+  { path: 'studijski-programi', component: StudijskiProgramListComponent, canActivate: [authGuard] },
 ];

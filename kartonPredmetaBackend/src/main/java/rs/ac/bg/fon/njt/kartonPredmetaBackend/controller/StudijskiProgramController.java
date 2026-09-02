@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/studijski-programi")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StudijskiProgramController {
 
     private final StudijskiProgramService service;

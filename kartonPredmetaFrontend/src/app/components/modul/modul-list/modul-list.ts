@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Modul } from '../../../models/modul.model';
@@ -17,7 +17,10 @@ export class ModulListComponent implements OnInit {
   ucitavanje: boolean = true;
   greska: string = '';
 
-  constructor(private service: ModulService) {}
+  constructor(
+    private service: ModulService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.ucitaj();
@@ -29,10 +32,12 @@ export class ModulListComponent implements OnInit {
       next: (podaci) => {
         this.moduli = podaci;
         this.ucitavanje = false;
+        this.cdr.detectChanges(); // Eksplicitno osvežava prikaz i gasi loader
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja modula';
         this.ucitavanje = false;
+        this.cdr.detectChanges();
         console.error(err);
       }
     });
@@ -46,6 +51,7 @@ export class ModulListComponent implements OnInit {
       next: () => this.ucitaj(),
       error: (err) => {
         this.greska = 'Greška prilikom brisanja (možda postoje predmeti povezani sa ovim modulom)';
+        this.cdr.detectChanges();
         console.error(err);
       }
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,12 +26,16 @@ export class ModulFormComponent implements OnInit {
     private service: ModulService,
     private studijskiProgramService: StudijskiProgramService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.studijskiProgramService.findAll().subscribe({
-      next: (podaci) => this.studijskiProgrami = podaci,
+      next: (podaci) => {
+        this.studijskiProgrami = podaci;
+        this.cdr.detectChanges(); // Odmah osvežava prikaz da se pojave studijski programi u select-u
+      },
       error: (err) => console.error(err)
     });
 
@@ -40,9 +44,13 @@ export class ModulFormComponent implements OnInit {
       this.izmena = true;
       const id = Number(idParam);
       this.service.findById(id).subscribe({
-        next: (podaci) => this.model = podaci,
+        next: (podaci) => {
+          this.model = podaci;
+          this.cdr.detectChanges();
+        },
         error: (err) => {
           this.greska = 'Greška prilikom učitavanja podataka';
+          this.cdr.detectChanges();
           console.error(err);
         }
       });
@@ -65,6 +73,7 @@ export class ModulFormComponent implements OnInit {
       error: (err) => {
         this.cuvanje = false;
         this.greska = err.error?.messages?.join(', ') || 'Greška prilikom čuvanja';
+        this.cdr.detectChanges();
         console.error(err);
       }
     });

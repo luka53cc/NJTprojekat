@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Nastavnik } from '../../../models/nastavnik.model';
@@ -17,7 +17,10 @@ export class NastavnikListComponent implements OnInit {
   ucitavanje: boolean = true;
   greska: string = '';
 
-  constructor(private service: NastavnikService) {}
+  constructor(
+    private service: NastavnikService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.ucitaj();
@@ -29,10 +32,12 @@ export class NastavnikListComponent implements OnInit {
       next: (podaci) => {
         this.nastavnici = podaci;
         this.ucitavanje = false;
+        this.cdr.detectChanges(); // Eksplicitno osvežava prikaz i gasi loader
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja nastavnika';
         this.ucitavanje = false;
+        this.cdr.detectChanges();
         console.error(err);
       }
     });
@@ -46,6 +51,7 @@ export class NastavnikListComponent implements OnInit {
       next: () => this.ucitaj(),
       error: (err) => {
         this.greska = 'Greška prilikom brisanja (možda je nastavnik dodeljen nekom predmetu)';
+        this.cdr.detectChanges();
         console.error(err);
       }
     });
