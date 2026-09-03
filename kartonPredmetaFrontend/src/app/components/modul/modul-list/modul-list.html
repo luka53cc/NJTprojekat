@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h3>Moduli</h3>
-  <a routerLink="/moduli/novi" class="btn btn-primary">+ Novi modul</a>
+  <a *ngIf="authService.isLoggedIn()" routerLink="/moduli/novi" class="btn btn-primary">+ Novi modul</a>
 </div>
 
 <div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
@@ -22,8 +22,11 @@
       <td>{{ m.naziv }}</td>
       <td>{{ m.studijskiProgramNaziv }}</td>
       <td>
-        <a [routerLink]="['/moduli', m.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
-        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(m.id)">Obriši</button>
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <a [routerLink]="['/moduli', m.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+          <button class="btn btn-sm btn-outline-danger" (click)="obrisi(m.id)">Obriši</button>
+        </ng-container>
+        <span *ngIf="!authService.isLoggedIn()" class="text-muted small">Samo pregled</span>
       </td>
     </tr>
     <tr *ngIf="moduli.length === 0">

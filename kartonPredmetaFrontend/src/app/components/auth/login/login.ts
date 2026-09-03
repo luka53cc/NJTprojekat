@@ -36,4 +36,8 @@ export class LoginComponent {
       }
     });
   }
+
+  nastaviKaoGost(): void {
+    this.router.navigate(['/predmeti']);
+  }
 }

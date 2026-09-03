@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h3>Studijski programi</h3>
-  <a routerLink="/studijski-programi/novi" class="btn btn-primary">+ Novi studijski program</a>
+  <a *ngIf="authService.isLoggedIn()" routerLink="/studijski-programi/novi" class="btn btn-primary">+ Novi studijski program</a>
 </div>
 
 <div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
@@ -22,8 +22,11 @@
       <td>{{ program.naziv }}</td>
       <td>{{ program.skracenica }}</td>
       <td>
-        <a [routerLink]="['/studijski-programi', program.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
-        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(program.id)">Obriši</button>
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <a [routerLink]="['/studijski-programi', program.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+          <button class="btn btn-sm btn-outline-danger" (click)="obrisi(program.id)">Obriši</button>
+        </ng-container>
+        <span *ngIf="!authService.isLoggedIn()" class="text-muted small">Samo pregled</span>
       </td>
     </tr>
     <tr *ngIf="programi.length === 0">

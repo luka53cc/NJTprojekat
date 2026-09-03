@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Modul } from '../../../models/modul.model';
 import { ModulService } from '../../../services/modul.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-modul-list',
@@ -19,6 +20,7 @@ export class ModulListComponent implements OnInit {
 
   constructor(
     private service: ModulService,
+    public authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -32,7 +34,7 @@ export class ModulListComponent implements OnInit {
       next: (podaci) => {
         this.moduli = podaci;
         this.ucitavanje = false;
-        this.cdr.detectChanges(); // Eksplicitno osvežava prikaz i gasi loader
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja modula';

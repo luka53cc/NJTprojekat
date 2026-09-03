@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" *ngIf="authService.isLoggedIn()">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/predmeti">Karton predmeta</a>
 
@@ -22,11 +22,20 @@
         </li>
       </ul>
 
-      <span class="navbar-text me-3 text-light">
-        {{ authService.getKorisnickoIme() }}
-      </span>
+      <!-- Ako je ulogovan admin -->
+      <ng-container *ngIf="authService.isLoggedIn(); else guestTemplate">
+        <span class="navbar-text me-3 text-light">
+          {{ authService.getKorisnickoIme() }}
+        </span>
+        <button class="btn btn-outline-light btn-sm" (click)="odjaviSe()">Odjava</button>
+      </ng-container>
 
-      <button class="btn btn-outline-light btn-sm" (click)="odjaviSe()">Odjava</button>
+      <!-- Ako je gost -->
+      <ng-template #guestTemplate>
+        <span class="navbar-text me-3 text-warning">Gost režim</span>
+        <a class="btn btn-outline-success btn-sm" routerLink="/login">Prijavi se</a>
+      </ng-template>
+
     </div>
   </div>
 </nav>

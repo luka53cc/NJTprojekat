@@ -13,26 +13,26 @@ import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'predmeti', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' }, // <-- Promenjeno ovde sa 'predmeti' na 'login'
 
-  //  PREDMETI 
+  // PREDMETI (Liste i detalji otvoreni za sve, forme za izmenu/kreiranje samo za admina)
   { path: 'predmeti/novi', component: PredmetFormComponent, canActivate: [authGuard] },
-  { path: 'predmeti/detalji/:id', component: PredmetDetaljiComponent, canActivate: [authGuard] },
-  { path: 'predmeti/:id', component: PredmetFormComponent, canActivate: [authGuard] },
-  { path: 'predmeti', component: PredmetListComponent, canActivate: [authGuard] },
+  { path: 'predmeti/detalji/:id', component: PredmetDetaljiComponent }, 
+  { path: 'predmeti/:id', component: PredmetFormComponent, canActivate: [authGuard] }, 
+  { path: 'predmeti', component: PredmetListComponent }, 
 
-  //NASTAVNICI 
+  // NASTAVNICI 
   { path: 'nastavnici/novi', component: NastavnikFormComponent, canActivate: [authGuard] },
   { path: 'nastavnici/:id', component: NastavnikFormComponent, canActivate: [authGuard] },
-  { path: 'nastavnici', component: NastavnikListComponent, canActivate: [authGuard] },
+  { path: 'nastavnici', component: NastavnikListComponent }, 
 
-  // MODULI
+  // MODULI 
   { path: 'moduli/novi', component: ModulFormComponent, canActivate: [authGuard] },
   { path: 'moduli/:id', component: ModulFormComponent, canActivate: [authGuard] },
-  { path: 'moduli', component: ModulListComponent, canActivate: [authGuard] },
+  { path: 'moduli', component: ModulListComponent }, 
 
-  //STUDIJSKI PROGRAMI
+  // STUDIJSKI PROGRAMI 
   { path: 'studijski-programi/novi', component: StudijskiProgramFormComponent, canActivate: [authGuard] },
   { path: 'studijski-programi/:id', component: StudijskiProgramFormComponent, canActivate: [authGuard] },
-  { path: 'studijski-programi', component: StudijskiProgramListComponent, canActivate: [authGuard] },
+  { path: 'studijski-programi', component: StudijskiProgramListComponent }, 
 ];

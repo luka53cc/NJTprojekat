@@ -1,6 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h3>Nastavnici</h3>
-  <a routerLink="/nastavnici/novi" class="btn btn-primary">+ Novi nastavnik</a>
+  <!-- Prikazuje se samo administratoru -->
+  <a *ngIf="authService.isLoggedIn()" routerLink="/nastavnici/novi" class="btn btn-primary">+ Novi nastavnik</a>
 </div>
 
 <div class="alert alert-danger" *ngIf="greska">{{ greska }}</div>
@@ -24,8 +25,13 @@
       <td>{{ n.email }}</td>
       <td>{{ n.zvanje }}</td>
       <td>
-        <a [routerLink]="['/nastavnici', n.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
-        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(n.id)">Obriši</button>
+        <!-- Prikazuje se SAMO administratoru -->
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <a [routerLink]="['/nastavnici', n.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+          <button class="btn btn-sm btn-outline-danger" (click)="obrisi(n.id)">Obriši</button>
+        </ng-container>
+        <!-- Ako je gost, tabela nema kolonu za akcije ili ostaje prazna -->
+        <span *ngIf="!authService.isLoggedIn()" class="text-muted small">Samo pregled</span>
       </td>
     </tr>
     <tr *ngIf="nastavnici.length === 0">

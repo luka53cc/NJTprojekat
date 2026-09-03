@@ -7,6 +7,7 @@ import { StatusPredmeta } from '../../../models/status-predmeta.model';
 import { StudijskiProgram } from '../../../models/studijski-program.model';
 import { PredmetService } from '../../../services/predmet.service';
 import { StudijskiProgramService } from '../../../services/studijski-program.service';
+import { AuthService } from '../../../services/auth.service'; // Dodat import
 
 @Component({
   selector: 'app-predmet-list',
@@ -41,6 +42,7 @@ export class PredmetListComponent implements OnInit {
   constructor(
     private service: PredmetService,
     private studijskiProgramService: StudijskiProgramService,
+    public authService: AuthService, // Ubaceno ovde sa public da bi radilo u HTML-u
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -75,12 +77,12 @@ export class PredmetListComponent implements OnInit {
         this.ukupnoStranica = odgovor.totalPages;
         this.ukupnoElemenata = odgovor.totalElements;
         this.ucitavanje = false;
-        this.cdr.detectChanges(); // Odmah osvežava prikaz i gasi loader
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja predmeta';
         this.ucitavanje = false;
-        this.cdr.detectChanges(); // Osvežava ekran i u slučaju greške
+        this.cdr.detectChanges();
         console.error(err);
       }
     });

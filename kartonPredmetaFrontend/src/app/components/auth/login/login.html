@@ -1,40 +1,57 @@
-<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-  <div class="card shadow-sm" style="width: 380px;">
-    <div class="card-body p-4">
-      <h4 class="card-title text-center mb-4">Prijava</h4>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card shadow">
+        <div class="card-body">
+          <h3 class="card-title text-center mb-4">Prijava na sistem</h3>
 
-      <div class="alert alert-danger" *ngIf="greska">
-        {{ greska }}
+          <!-- Prikaz greške ako login ne uspije -->
+          <div *ngIf="greska" class="alert alert-danger" role="alert">
+            {{ greska }}
+          </div>
+
+          <form (ngSubmit)="prijaviSe()">
+            <div class="mb-3">
+              <label for="korisnickoIme" class="form-label">Korisničko ime</label>
+              <input 
+                type="text" 
+                id="korisnickoIme" 
+                class="form-control" 
+                [(ngModel)]="korisnickoIme" 
+                name="korisnickoIme" 
+                required 
+                placeholder="Unesite korisničko ime">
+            </div>
+
+            <div class="mb-3">
+              <label for="lozinka" class="form-label">Lozinka</label>
+              <input 
+                type="password" 
+                id="lozinka" 
+                class="form-control" 
+                [(ngModel)]="lozinka" 
+                name="lozinka" 
+                required 
+                placeholder="Unesite lozinku">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" [disabled]="ucitavanje">
+              <span *ngIf="ucitavanje" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Prijavi se
+            </button>
+          </form>
+
+          <hr class="my-4">
+
+          <!-- Dugme za ulazak u gost režim -->
+          <div class="d-grid">
+            <button type="button" class="btn btn-outline-secondary" (click)="nastaviKaoGost()">
+              Nastavi kao Gost (Samo pregled)
+            </button>
+          </div>
+
+        </div>
       </div>
-
-      <form (ngSubmit)="prijaviSe()">
-        <div class="mb-3">
-          <label class="form-label">Korisničko ime</label>
-          <input
-            type="text"
-            class="form-control"
-            name="korisnickoIme"
-            [(ngModel)]="korisnickoIme"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Lozinka</label>
-          <input
-            type="password"
-            class="form-control"
-            name="lozinka"
-            [(ngModel)]="lozinka"
-            required
-          />
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100" [disabled]="ucitavanje">
-          <span *ngIf="ucitavanje" class="spinner-border spinner-border-sm me-2"></span>
-          Prijavi se
-        </button>
-      </form>
     </div>
   </div>
 </div>

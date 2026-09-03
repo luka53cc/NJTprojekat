@@ -1,6 +1,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h3>Predmeti</h3>
-  <a routerLink="/predmeti/novi" class="btn btn-primary">+ Novi predmet</a>
+  <!-- Prikazuje se samo administratoru -->
+  <a *ngIf="authService.isLoggedIn()" routerLink="/predmeti/novi" class="btn btn-primary">+ Novi predmet</a>
 </div>
 
 <div class="card mb-3">
@@ -65,10 +66,13 @@
       <td>{{ p.espb }}</td>
       <td>{{ p.status }}</td>
       <td>
+        <!-- Detalji i PDF su vidljivi svima (i gostima) -->
         <a [routerLink]="['/predmeti/detalji', p.id]" class="btn btn-sm btn-outline-primary me-1">Detalji</a>
-        <a [routerLink]="['/predmeti', p.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
         <button class="btn btn-sm btn-outline-success me-1" (click)="preuzmiPdf(p.id, p.sifra)">PDF</button>
-        <button class="btn btn-sm btn-outline-danger" (click)="obrisi(p.id)">Obriši</button>
+        
+        <!-- Izmeni i Obriši su vidljivi SAMO ulogovanom administratoru -->
+        <a *ngIf="authService.isLoggedIn()" [routerLink]="['/predmeti', p.id]" class="btn btn-sm btn-outline-secondary me-1">Izmeni</a>
+        <button *ngIf="authService.isLoggedIn()" class="btn btn-sm btn-outline-danger" (click)="obrisi(p.id)">Obriši</button>
       </td>
     </tr>
     <tr *ngIf="predmeti.length === 0">

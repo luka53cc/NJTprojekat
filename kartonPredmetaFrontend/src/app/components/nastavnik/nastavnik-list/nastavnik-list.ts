@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Nastavnik } from '../../../models/nastavnik.model';
 import { NastavnikService } from '../../../services/nastavnik.service';
+import { AuthService } from '../../../services/auth.service'; // Dodat import
 
 @Component({
   selector: 'app-nastavnik-list',
@@ -19,6 +20,7 @@ export class NastavnikListComponent implements OnInit {
 
   constructor(
     private service: NastavnikService,
+    public authService: AuthService, // Ubaceno ovde sa public
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -32,7 +34,7 @@ export class NastavnikListComponent implements OnInit {
       next: (podaci) => {
         this.nastavnici = podaci;
         this.ucitavanje = false;
-        this.cdr.detectChanges(); // Eksplicitno osvežava prikaz i gasi loader
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.greska = 'Greška prilikom učitavanja nastavnika';
