@@ -10,6 +10,7 @@ import { PredispitnaObaveza } from '../../../models/predispitna-obaveza.model';
 import { StudijskiProgram } from '../../../models/studijski-program.model';
 import { Modul } from '../../../models/modul.model';
 import { Nastavnik } from '../../../models/nastavnik.model';
+import { Zvanje } from '../../../models/zvanje.model';
 import { PredmetService } from '../../../services/predmet.service';
 import { StudijskiProgramService } from '../../../services/studijski-program.service';
 import { ModulService } from '../../../services/modul.service';
@@ -32,6 +33,7 @@ export class PredmetFormComponent implements OnInit {
   studijskiProgrami: StudijskiProgram[] = [];
   moduliZaProgram: Modul[] = [];
   nastavnici: Nastavnik[] = [];
+  moguciNosioci: Nastavnik[] = [];
 
   izmena: boolean = false;
   greska: string = '';
@@ -79,7 +81,14 @@ export class PredmetFormComponent implements OnInit {
     });
 
     this.nastavnikService.findAll().subscribe({
-      next: (podaci) => this.nastavnici = podaci,
+      next: (podaci) => {
+        this.nastavnici = podaci;
+        this.moguciNosioci = podaci.filter(n =>
+          n.zvanje === Zvanje.REDOVNI_PROFESOR ||
+          n.zvanje === Zvanje.VANREDNI_PROFESOR ||
+          n.zvanje === Zvanje.DOCENT
+        );
+      },
       error: (err) => console.error(err)
     });
 
@@ -154,13 +163,92 @@ export class PredmetFormComponent implements OnInit {
   sacuvaj(): void {
     this.greska = '';
 
-    if (this.zbirPoena() !== 100) {
-      this.greska = `Zbir predispitnih poena i poena na ispitu mora biti tačno 100 (trenutno: ${this.zbirPoena()})`;
-      return;
+    const greskeValidacije: string[] = [];
+
+    if (!this.model.naziv || !this.model.naziv.trim()) {
+      greskeValidacije.push('Naziv predmeta je obavezan');
+    }
+    if (!this.model.sifra || !this.model.sifra.trim()) {
+      greskeValidacije.push('Šifra predmeta je obavezna');
+    }
+    if (!this.model.godinaStudija) {
+      greskeValidacije.push('Godina studija je obavezna');
+    }
+    if (!this.model.semestar) {
+      greskeValidacije.push('Semestar je obavezan');
+    }
+    if (!this.model.espb) {
+      greskeValidacije.push('ESPB je obavezan');
+    }
+    if (this.model.fondPredavanja === null || this.model.fondPredavanja === undefined) {
+      greskeValidacije.push('Fond predavanja je obavezan');
+    }
+    if (this.model.fondVezbi === null || this.model.fondVezbi === undefined) {
+      greskeValidacije.push('Fond vežbi je obavezan');
+    }
+    if (!this.model.status) {
+      greskeValidacije.push('Status predmeta je obavezan');
+    }
+    if (!this.model.cilj || !this.model.cilj.trim()) {
+      greskeValidacije.push('Cilj predmeta je obavezan');
+    }
+    if (!this.model.ishodiUcenja || !this.model.ishodiUcenja.trim()) {
+      greskeValidacije.push('Ishodi učenja su obavezni');
+    }
+    if (!this.model.sadrzajPredavanja || !this.model.sadrzajPredavanja.trim()) {
+      greskeValidacije.push('Sadržaj predavanja je obavezan');
+    }
+    if (!this.model.sadrzajVezbi || !this.model.sadrzajVezbi.trim()) {
+      greskeValidacije.push('Sadržaj vežbi je obavezan');
+    }
+    if (!this.model.nacinPolaganja || !this.model.nacinPolaganja.trim()) {
+      greskeValidacije.push('Način polaganja ispita je obavezan');
+    }
+    if (!this.model.studijskiProgramId) {
+      greskeValidacije.push('Studijski program je obavezan');
     }
 
     if (!this.model.nosilacId) {
-      this.greska = 'Nosilac predmeta je obavezan';
+      greskeValidacije.push('Nosilac predmeta je obavezan');
+    } else if (!this.moguciNosioci.some(n => n.id === this.model.nosilacId)) {
+      greskeValidacije.push('Izabrani nosilac predmeta nema odgovarajuće zvanje (mora biti docent, vanredni ili redovni profesor)');
+    }
+
+    if (this.model.predispitneObaveze.length === 0) {
+      greskeValidacije.push('Mora postojati bar jedna predispitna obaveza');
+    } else {
+      this.model.predispitneObaveze.forEach((o, i) => {
+        if (!o.naziv || !o.naziv.trim()) {
+          greskeValidacije.push(`Naziv predispitne obaveze #${i + 1} je obavezan`);
+        }
+        if (o.brojPoena === null || o.brojPoena === undefined || o.brojPoena < 0) {
+          greskeValidacije.push(`Broj poena predispitne obaveze #${i + 1} mora biti unet i ne sme biti negativan`);
+        }
+      });
+    }
+
+    if (this.model.literatura.length === 0) {
+      greskeValidacije.push('Mora postojati bar jedna stavka literature');
+    } else {
+      this.model.literatura.forEach((l, i) => {
+        if (!l.naziv || !l.naziv.trim()) {
+          greskeValidacije.push(`Naziv literature #${i + 1} je obavezan`);
+        }
+        if (!l.autor || !l.autor.trim()) {
+          greskeValidacije.push(`Autor literature #${i + 1} je obavezan`);
+        }
+        if (!l.tip) {
+          greskeValidacije.push(`Tip literature #${i + 1} je obavezan`);
+        }
+      });
+    }
+
+    if (this.zbirPoena() !== 100) {
+      greskeValidacije.push(`Zbir predispitnih poena i poena na ispitu mora biti tačno 100 (trenutno: ${this.zbirPoena()})`);
+    }
+
+    if (greskeValidacije.length > 0) {
+      this.greska = greskeValidacije.join('; ');
       return;
     }
 

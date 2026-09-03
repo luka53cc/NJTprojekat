@@ -62,9 +62,11 @@
         <div class="col-md-6">
           <label class="form-label">Nosilac predmeta</label>
           <select class="form-select" name="nosilacId" [(ngModel)]="model.nosilacId" required>
-            <option [value]="0" disabled>-- Izaberite --</option>
-            <option *ngFor="let n of nastavnici" [value]="n.id">{{ n.ime }} {{ n.prezime }}</option>
-          </select>
+            <option [ngValue]="0" disabled>-- Izaberite --</option>
+            <option *ngFor="let n of moguciNosioci" [ngValue]="n.id">{{ n.ime }} {{ n.prezime }}</option>          </select>
+          <small class="text-muted" *ngIf="moguciNosioci.length === 0">
+            Nema unetih odgovarajućih nastavnika — prvo dodajte nastavnika sa tim zvanjem.
+          </small>
         </div>
       </div>
     </div>
